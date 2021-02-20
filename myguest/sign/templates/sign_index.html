@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <meta charset="UTF-8">
+    <title>sign page</title>
+</head>
+<body role="document">
+<!--导航栏-->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/event_manage/"> Guest Manage System</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+              <li class="active"><a href="#">发布会</a></li>
+              <li ><a href="/guest_manage/">嘉宾</a></li>
+          </ul>
+           <ul class="nav navbar-nav navbar-right">
+              <li><a href="#">{{ user }}</a></li>
+              <li><a href="/logout/">退出</a></li>
+          </ul>
+        </div>
+    </div>
+</nav>
+<!--签到功能-->
+<div class="page-header" style="padding-top: 80px;">
+     <div id="navbar" class="navbar-collapse collapse">
+         <input type="text" id="eid" style="display: none" value="{{ event_id }}" />
+         <form class="navbar-form" method="post" action="">
+
+             <div class="form-group">
+                 <input name="phone" id="tel" type="text" placeholder="输入手机号" class="form-control">
+             </div>
+             <button type="button" class="btn btn-success" id="btn">签到</button>
+             <font color="red">
+                 <br>{{ hint }}
+                 <br>{{ guest.realname }}
+                 <br>{{ guest.phone }}
+             </font>
+         </form>
+     </div>
+
+</div>
+</body>
+<script src="{% static 'jquery-3.5.1.js'%}"></script>
+<script type="text/javascript">
+    $("#btn").click(function () {
+      phone=$("#tel").val()
+      eventid=$("#eid").val()
+      $.ajax({
+          type:"GET",
+          url:'/sign_index_action/',
+          data:{"eid":eventid,"phone":phone},
+          dataType:"json",
+          success:function(data){
+              alert(data.msg)
+          }
+      });
+    })
+</script>
+</html>

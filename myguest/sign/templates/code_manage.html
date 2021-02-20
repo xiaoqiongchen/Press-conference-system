@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <title>代码统计页</title>
+</head>
+<body>
+<!--导航栏-->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand">代码统计页</a>
+        </div>
+    </div>
+</nav>
+
+<div class="page-header" style="padding-top: 60px;">
+    <div id="navbar" class="navbar-collapse collapse">
+        <form class="navbar-form" method="get">
+            <div class="form-group">
+                <input name="name" type="text" id="id_path" placeholder="文件路径" class="form-control">
+                <input name="name" type="text" id="id_type" placeholder="代码类型" class="form-control">
+                <button type="button" class="btn btn-success" onclick="search();">搜索</button>
+
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row" style="padding-top: 80px;">
+    <div class="col-md-6">
+        <table class="table table-striped">
+            <thead>
+               <tr>
+                   <th>目录</th><th>有效行</th><th>注释行</th><th>空行</th><th>总行</th>
+               </tr>
+            </thead>
+            <tbody id="datainfo">
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+<script src="{% static 'jquery-3.5.1.js'%}"></script>
+<script type="text/javascript">
+function search(){
+path=$("#id_path").val()
+codetype=$("#id_type").val()
+$.ajax({
+          type:"GET",
+          url:'/search_manage/',
+          data:{"path":path,"codetype":codetype},
+          dataType:"json",
+          success:function(data){
+            $('#datainfo').append("<tr ><td>"+path+"</td><td>"+ data.valid + "</td><td>"+ data.comment + "</td><td>" + data.space+"</td><td>"+ data.all + "</td></tr>")
+          }
+      });
+}
+</script>
+</html>
